@@ -9,6 +9,7 @@ export class FavoriteMedia extends LitElement {
     media: { type: Array },
     currentIndex: { type: Number },
     loading: { type: Boolean },
+    likes: { type: Object },
   };
 
   constructor() {
@@ -16,11 +17,30 @@ export class FavoriteMedia extends LitElement {
     this.media = [];
     this.currentIndex = 0;
     this.loading = false;
+    this.likes = {};
   }
 
   connectedCallback() {
     super.connectedCallback();
+    this.loadLikes();
     this.getMedia(6);
+  }
+
+
+  loadLikes() {
+    const stored = localStorage.getItem("favoriteMediaLikes");
+    if (stored) {
+      try {
+        this.likes = JSON.parse(stored);
+      } catch {
+        console.warn("Failed to parse stored likes.");
+      }
+    }
+  }
+
+
+  saveLikes() {
+    localStorage.setItem("favoriteMediaLikes", JSON.stringify(this.likes));
   }
 
   async getMedia(count = 3, direction = "right") {
@@ -60,24 +80,60 @@ export class FavoriteMedia extends LitElement {
     else this.currentIndex = Math.max(this.currentIndex - 1, 0);
   }
 
+  toggleLike(title, value) {
+    // Toggle logic
+    const updatedLikes = {
+      ...this.likes,
+      [title]: this.likes[title] === value ? null : value,
+    };
+    this.likes = updatedLikes;
+    this.saveLikes();
+  }
+
   render() {
     const visible = this.media.slice(this.currentIndex, this.currentIndex + 3);
     return html`
       <div class="wrapper">
-        <h2>Media Carousel</h2>
         <div class="carousel">
-          <button class="arrow" @click=${this.prev} ?disabled=${this.loading}>&#8592;</button>
+          <button class="arrow" @click=${this.prev} ?disabled=${this.loading}>
+            &#8592;
+          </button>
           <div class="slides">
             ${visible.map(
               (m) => html`
-                <div class="card" @click=${() => window.open(m.link, "_blank")}>
-                  <img src=${m.image} alt=${m.title} loading="lazy" />
+                <div class="card">
+                  <img
+                    src=${m.image}
+                    alt=${m.title}
+                    loading="lazy"
+                    @click=${() => window.open(m.link, "_blank")}
+                  />
                   <p>${m.title}</p>
+                  <div class="buttons">
+                    <button
+                      class="like ${this.likes[m.title] === "like"
+                        ? "active"
+                        : ""}"
+                      @click=${() => this.toggleLike(m.title, "like")}
+                    >
+                      ❤️ Like
+                    </button>
+                    <button
+                      class="dislike ${this.likes[m.title] === "dislike"
+                        ? "active"
+                        : ""}"
+                      @click=${() => this.toggleLike(m.title, "dislike")}
+                    >
+                      👎 Dislike
+                    </button>
+                  </div>
                 </div>
               `
             )}
           </div>
-          <button class="arrow" @click=${this.next} ?disabled=${this.loading}>&#8594;</button>
+          <button class="arrow" @click=${this.next} ?disabled=${this.loading}>
+            &#8594;
+          </button>
         </div>
         ${this.loading ? html`<p class="loading">Loading new media...</p>` : ""}
       </div>
@@ -143,6 +199,7 @@ export class FavoriteMedia extends LitElement {
       background: #f5f5f5;
       cursor: pointer;
       transition: transform 0.2s ease;
+      padding-bottom: 0.5rem;
     }
 
     .card:hover {
@@ -159,6 +216,41 @@ export class FavoriteMedia extends LitElement {
     p {
       margin: 0.5rem 0;
       font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    button.like,
+    button.dislike {
+      background: #e0e0e0;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    button.like.active {
+      background: #ff4d4f;
+      color: white;
+    }
+
+    button.dislike.active {
+      background: #4f5d75;
+      color: white;
+    }
+
+    button.like:hover:not(.active) {
+      background: #ff9999;
+    }
+
+    button.dislike:hover:not(.active) {
+      background: #9fa9c9;
     }
 
     .loading {
@@ -194,3 +286,4 @@ export class FavoriteMedia extends LitElement {
 }
 
 customElements.define("favorite-media", FavoriteMedia);
+
