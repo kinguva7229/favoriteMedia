@@ -1,0 +1,204 @@
+{
+  "user": {
+    "author": "Kaushik Inguva",
+    "contact": "vibeCOder@gmail.com"
+  },
+  "movies": [
+    {
+      "title": "Game of Thrones",
+      "src": "https://resizing.flixster.com/tgbdTLCTP00kA0hWfjpgPwzXTpg=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p8553063_b_v13_ax.jpg"
+    },
+    {
+      "title": "The Dark Knight",
+      "src": "https://i.ebayimg.com/images/g/dhIAAOSw~gRVw4yu/s-l1200.jpg"
+    },
+    {
+      "title": "The Dark Knight Rises",
+      "src": "https://m.media-amazon.com/images/I/81UjSDy8azL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "The Sopranos",
+      "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf8lTbTebIcqttkCMpwK7AzP7T2A2vptAiEw&s"
+    },
+    {
+      "title": "Heat",
+      "src": "https://i.pinimg.com/564x/a5/68/bf/a568bfe977f2f3fd65112da9d9664441.jpg"
+    },
+    {
+      "title": "Point Break",
+      "src": "https://images.photowall.com/products/59580/point-break.jpg?h=699&q=85"
+    },
+    {
+      "title": "Gladiator",
+      "src": "https://m.media-amazon.com/images/I/71sj8Yt20qL.jpg"
+    },
+    {
+      "title": "The Wolf of Wall Street",
+      "src": "https://i.etsystatic.com/18242346/r/il/c89d6e/2760768825/il_fullxfull.2760768825_t578.jpg"
+    },
+    {
+      "title": "That's My Boy",
+      "src": "https://m.media-amazon.com/images/I/51OKjIxK8sL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "The Departed",
+      "src": "https://m.media-amazon.com/images/I/71JMspdKpAL.jpg"
+    },
+    {
+      "title": "Batman Begins",
+      "src": "https://filmartgallery.com/cdn/shop/products/Batman-Begins-Vintage-Movie-Poster-Original.jpg?v=1738908392"
+    },
+    {
+      "title": "Sicario",
+      "src": "https://i.ebayimg.com/images/g/OUYAAOSwoIlax~jh/s-l1200.jpg"
+    },
+    {
+      "title": "Dune",
+      "src": "https://m.media-amazon.com/images/I/61QbqeCVm0L.jpg"
+    },
+    {
+      "title": "Dune: Part Two",
+      "src": "https://deadline.com/wp-content/uploads/2024/01/MCDDUPA_WB001.jpg?w=800"
+    },
+    {
+      "title": "Django Unchained",
+      "src": "https://ih1.redbubble.net/image.3403824752.9898/flat,750x,075,f-pad,750x1000,f8f8f8.jpg"
+    },
+    {
+      "title": "The Shawshank Redemption",
+      "src": "https://m.media-amazon.com/images/I/71JxA6I+sgL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "The Prestige",
+      "src": "https://i.ebayimg.com/images/g/kaMAAMXQ3kRQ9FFO/s-l1200.jpg"
+    },
+    {
+      "title": "Interstellar",
+      "src": "https://mythicwall.com/cdn/shop/files/Interstellar_2BMovie_2B_2Bposter_2BPrint_2BWall_2BArt_2BPoster_2B1-W0pfS_1024x1024.jpg?v=1712634286"
+    },
+    {
+      "title": "The Social Network",
+      "src": "https://m.media-amazon.com/images/I/518zV7F39qL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "The Martian",
+      "src": "https://m.media-amazon.com/images/I/51xroFO8wdL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "The Office",
+      "src": "https://m.media-amazon.com/images/I/615MPacH9qL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "Brooklyn Nine-Nine",
+      "src": "https://cdn11.bigcommerce.com/s-b72t4x/images/stencil/1280x1280/products/270418/193439/Brooklyn_Nine-Nine_Poster__67318.1595640128.jpg?c=2"
+    },
+    {
+      "title": "The Last Samurai",
+      "src": "https://lh6.googleusercontent.com/proxy/MkLJMDIHNFrfDgDmA89P9M6EvUGBOhr8fnDcq2RdiIiOC6c0Dugc9n2uNDG--w1wDhcLiZvQmZkChFjYycNilEgMapdI6sra7Q3V867K"
+    },
+    {
+      "title": "Gone Girl",
+      "src": "https://m.media-amazon.com/images/I/61cdYGoHFrL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "Mission: Impossible – Fallout",
+      "src": "https://i5.walmartimages.com/asr/936273f5-baf8-4e04-95ca-9fa8af935a8c.350356035fc307da6f1a7d1148570b39.jpeg"
+    },
+    {
+      "title": "Memories of Murder",
+      "src": "https://m.media-amazon.com/images/M/MV5BYmRjOWE5NmMtYTdkYS00ODFlLWJiMTMtYzE2NDZlZjlkZDQ0XkEyXkFqcGc@._V1_.jpg"
+    },
+    {
+      "title": "When Harry Met Sally",
+      "src": "https://m.media-amazon.com/images/I/61SuGcS9AvL.jpg"
+    },
+    {
+      "title": "You",
+      "src": "https://pixieposters.co.uk/cdn/shop/files/you-movie-poster.webp?v=1748453994"
+    },
+    {
+      "title": "Captain America: The Winter Soldier",
+      "src": "https://theposterdepot.com/cdn/shop/files/1117captainamericawintersoldiermini0310201402_602c1ea4-f38e-4d9e-a834-6c3218dff632_580x.jpg?v=1700200799"
+    },
+    {
+      "title": "Iron Man",
+      "src": "https://i.ebayimg.com/images/g/~yEAAMXQ2UVQ8Fgt/s-l400.jpg"
+    },
+    {
+      "title": "Avengers: Infinity War",
+      "src": "https://m.media-amazon.com/images/I/91IfP0TQjaL.jpg"
+    },
+    {
+      "title": "Saving Private Ryan",
+      "src": "https://m.media-amazon.com/images/I/51FiFegjEXL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "Inglourious Basterds",
+      "src": "https://i.ebayimg.com/images/g/F9UAAOSw171gr4Oa/s-l1200.jpg"
+    },
+    {
+      "title": "Jurassic Park",
+      "src": "https://m.media-amazon.com/images/I/61RLRZnbc+L._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "Rocky",
+      "src": "https://imgc.allpostersimages.com/img/posters/rocky-movie-poster_u-l-q1rlwjs0.jpg?artHeight=550&artPerspective=y&artWidth=550&background=ffffff"
+    },
+    {
+      "title": "Invincible",
+      "src": "https://i.ebayimg.com/00/s/MTYwMFgxMDgw/z/O4sAAOSwdxBlM-3j/$_57.JPG?set_id=880000500F"
+    },
+    {
+      "title": "Avatar: The Last Airbender",
+      "src": "https://images.darkhorse.com/covers/600/25/25737.jpg"
+    },
+    {
+      "title": "The Boys",
+      "src": "https://i5.walmartimages.com/seo/Boys-Movie-Poster-TV-Series-Quality-Glossy-Print-Photo-Wall-Art-Karl-Urban-Jack-Quaid-Antony-Starr-Sizes-Available-8x10-11x17-16x20-22x28-24x36-27x40_ed3a9e56-eb6a-446c-b60c-32578b7154d1.41c4fdb15d84e46f95b1b3de0021017c.jpeg"
+    },
+    {
+      "title": "Shogun",
+      "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFNz2x4jEc5gGBKqkMoy-NJZG-RTWUm26xgg&s"
+    },
+    {
+      "title": "John Wick",
+      "src": "https://m.media-amazon.com/images/I/41wmkb5ecXL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "Edge of Tomorrow",
+      "src": "https://m.media-amazon.com/images/I/51UMvvHCKQL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "Mission: Impossible – Ghost Protocol",
+      "src": "https://i.etsystatic.com/12729518/r/il/033ca1/2040351481/il_1080xN.2040351481_bsvo.jpg"
+    },
+    {
+      "title": "Inception",
+      "src": "https://i.ebayimg.com/00/s/MTYwMFgxMDk3/z/LlUAAOSwm8VUwoRL/$_57.JPG?set_id=880000500F"
+    },
+    {
+      "title": "The Hangover",
+      "src": "https://i.ebayimg.com/images/g/dLcAAOSwcnpTqfVb/s-l1200.jpg"
+    },
+    {
+      "title": "Wedding Crashers",
+      "src": "https://m.media-amazon.com/images/I/51Ur5fxMewL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "White Chicks",
+      "src": "https://m.media-amazon.com/images/I/51gR71V+jRL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "The Other Guys",
+      "src": "https://m.media-amazon.com/images/I/513CtTKWNvL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "21 Jump Street",
+      "src": "https://m.media-amazon.com/images/I/714aUKa8fbL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      "title": "22 Jump Street",
+      "src": "https://i.ebayimg.com/00/s/MTYwMFgxMDgw/z/hTYAAOSw2YRnI5xE/$_57.JPG?set_id=880000500F"
+    }
+  ]
+}

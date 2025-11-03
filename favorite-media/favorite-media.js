@@ -1,115 +1,85 @@
 /**
  * Copyright 2025 kinguva7229
- * @license Apache-2.0, see LICENSE for full text.
+ * @license Apache-2.0
  */
 import { LitElement, html, css } from "lit";
 
 export class FavoriteMedia extends LitElement {
-  static get properties() {
-    return {
-      foxes: { type: Array },
-      currentIndex: { type: Number },
-      loading: { type: Boolean },
-    };
-  }
+  static properties = {
+    media: { type: Array },
+    currentIndex: { type: Number },
+    loading: { type: Boolean },
+  };
 
   constructor() {
     super();
-    this.foxes = [];
+    this.media = [];
     this.currentIndex = 0;
     this.loading = false;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.getFoxes(6); // load initial images
+    this.getMedia(6);
   }
 
-  // ✅ updated to support both directions
-  getFoxes(count = 3, direction = "right") {
+  async getMedia(count = 3, direction = "right") {
     this.loading = true;
-    const newFoxes = [];
-    let completed = 0;
+    try {
+      const resp = await fetch("/data/movies.json");
+      if (!resp.ok) throw new Error("Fetch failed");
+      const data = await resp.json();
+      const movieList = Array.isArray(data.movies) ? data.movies : data;
 
-    for (let i = 0; i < count; i++) {
-      fetch("https://randomfox.ca/floof/")
-        .then((resp) => resp.ok && resp.json())
-        .then((data) => {
-          if (data) {
-            newFoxes.push({ image: data.image, link: data.link });
-          }
-        })
-        .catch((err) => console.error("Error fetching fox:", err))
-        .finally(() => {
-          completed++;
-          if (completed === count) {
-            // ✅ prepend or append based on direction
-            if (direction === "left") {
-              this.foxes = [...newFoxes, ...this.foxes];
-              // shift index forward so visible window stays aligned
-              this.currentIndex += count;
-            } else {
-              this.foxes = [...this.foxes, ...newFoxes];
-            }
-            this.loading = false;
-          }
-        });
+      const newMedia = movieList.map((m) => ({
+        image: m.src,
+        link: m.src,
+        title: m.title,
+      }));
+
+      if (direction === "left") {
+        this.media = [...newMedia, ...this.media];
+        this.currentIndex += count;
+      } else {
+        this.media = [...this.media, ...newMedia];
+      }
+    } catch (e) {
+      console.error("Error fetching media:", e);
+    } finally {
+      this.loading = false;
     }
   }
 
   next() {
-    // if we're at the end, fetch 3 more to the right
-    if (this.currentIndex + 3 >= this.foxes.length) {
-      this.getFoxes(3, "right");
-    }
-    this.currentIndex = Math.min(this.currentIndex + 1, this.foxes.length - 3);
+    if (this.currentIndex + 3 >= this.media.length) this.getMedia(3, "right");
+    this.currentIndex = Math.min(this.currentIndex + 1, this.media.length - 3);
   }
 
   prev() {
-    // if we're at the beginning, fetch 3 more to the left
-    if (this.currentIndex <= 0) {
-      this.getFoxes(3, "left");
-    } else {
-      this.currentIndex = Math.max(this.currentIndex - 1, 0);
-    }
+    if (this.currentIndex <= 0) this.getMedia(3, "left");
+    else this.currentIndex = Math.max(this.currentIndex - 1, 0);
   }
 
   render() {
-    const visibleFoxes = this.foxes.slice(
-      this.currentIndex,
-      this.currentIndex + 3
-    );
-
+    const visible = this.media.slice(this.currentIndex, this.currentIndex + 3);
     return html`
       <div class="wrapper">
-        <h2>Fox Carousel</h2>
-
+        <h2>Media Carousel</h2>
         <div class="carousel">
-          <button class="arrow" @click=${this.prev} ?disabled=${this.loading}>
-            &#8592;
-          </button>
-
+          <button class="arrow" @click=${this.prev} ?disabled=${this.loading}>&#8592;</button>
           <div class="slides">
-            ${visibleFoxes.map(
-              (fox) => html`
-                <div
-                  class="card"
-                  @click=${() => window.open(fox.link, "_blank")}
-                >
-                  <img src=${fox.image} alt="Fox" loading="lazy" />
+            ${visible.map(
+              (m) => html`
+                <div class="card" @click=${() => window.open(m.link, "_blank")}>
+                  <img src=${m.image} alt=${m.title} loading="lazy" />
+                  <p>${m.title}</p>
                 </div>
               `
             )}
           </div>
-
-          <button class="arrow" @click=${this.next} ?disabled=${this.loading}>
-            &#8594;
-          </button>
+          <button class="arrow" @click=${this.next} ?disabled=${this.loading}>&#8594;</button>
         </div>
-
-        ${this.loading
-          ? html`<p class="loading">Loading new foxes...</p>`
-          : ""}
+        ${this.loading ? html`<p class="loading">Loading new media...</p>` : ""}
       </div>
     `;
   }
@@ -170,7 +140,7 @@ export class FavoriteMedia extends LitElement {
       flex: 1 0 250px;
       border-radius: 8px;
       overflow: hidden;
-      background-color: #f5f5f5;
+      background: #f5f5f5;
       cursor: pointer;
       transition: transform 0.2s ease;
     }
@@ -186,6 +156,11 @@ export class FavoriteMedia extends LitElement {
       display: block;
     }
 
+    p {
+      margin: 0.5rem 0;
+      font-weight: bold;
+    }
+
     .loading {
       margin-top: 1rem;
       font-style: italic;
@@ -198,13 +173,24 @@ export class FavoriteMedia extends LitElement {
         flex-direction: column;
         align-items: center;
       }
+
       .card {
-        width: 80%;
+        width: 85%;
+      }
+
+      .arrow {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      img {
+        height: 200px;
       }
     }
   `;
 }
 
-globalThis.customElements.define("favorite-media", FavoriteMedia);
-
-
+customElements.define("favorite-media", FavoriteMedia);
