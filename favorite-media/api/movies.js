@@ -6,12 +6,14 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
 
   try {
-    const filePath = path.join(process.cwd(), "api", "moviesNames.json"); 
+    const filePath = path.join(process.cwd(), "api", "moviesNames.json");
     const data = fs.readFileSync(filePath, "utf-8");
     const parsed = JSON.parse(data);
-    res.status(200).json(parsed.movies);
+
+
+    res.status(200).json(parsed.movies || parsed);
   } catch (err) {
-    console.error("Error reading movies.json:", err);
+    console.error("Error reading moviesNames.json:", err);
     res.status(500).json({ error: "Failed to load movie data" });
   }
 }
