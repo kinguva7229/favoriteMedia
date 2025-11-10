@@ -1,23 +1,29 @@
 import fs from "fs";
 import path from "path";
 
-export default async function handler(req, res) {
-  res.setHeader("Cache-Control", "max-age=0, s-maxage=1800");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+export default function handler(req, res) {
+  res.setHeader("Cache-Control", "no-store");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   try {
+
     const filePath = path.join(process.cwd(), "movies.json");
-    const data = fs.readFileSync(filePath, "utf-8");
+
+    if (!fs.existsSync(filePath)) {
+      console.error("movies.json not found at:", filePath);
+      return res.status(404).json({ error: "movies.json not found" });
+    }
+
+    const data = fs.readFileSync(filePath, "utf8");
     const parsed = JSON.parse(data);
-    res.status(200).json(parsed.movies);
+
+    return res.status(200).json(parsed);
   } catch (err) {
     console.error("Error reading movies.json:", err);
-    res.status(500).json({ error: "Failed to load movie data" });
+    return res.status(500).json({ error: "Failed to load movie data" });
   }
 }
+
+

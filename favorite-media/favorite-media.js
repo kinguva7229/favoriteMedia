@@ -2,10 +2,6 @@
  * Copyright 2025 kinguva7229
  * @license Apache-2.0
  */
-/**
- * Copyright 2025 kinguva7229
- * @license Apache-2.0
- */
 import { LitElement, html, css } from "lit";
 
 export class FavoriteMedia extends LitElement {
@@ -47,32 +43,37 @@ export class FavoriteMedia extends LitElement {
     localStorage.setItem("favoriteMediaLikes", JSON.stringify(this.likes));
   }
 
-  async getMedia(count = 3, direction = "right") {
-    this.loading = true;
-    try {
-      const resp = await fetch("/api/movies.json");
-      if (!resp.ok) throw new Error("Fetch failed");
-      const data = await resp.json();
-      const movieList = Array.isArray(data.movies) ? data.movies : data;
+async getMedia(count = 3, direction = "right") {
+  this.loading = true;
+  try {
+    const resp = await fetch("/api/movies");
+    if (!resp.ok) throw new Error(`Fetch failed: ${resp.status}`);
+    const data = await resp.json();
 
-      const newMedia = movieList.map((m) => ({
-        image: m.src,
-        link: m.src,
-        title: m.title,
-      }));
+    const movieList = data.movies || [];
 
-      if (direction === "left") {
-        this.media = [...newMedia, ...this.media];
-        this.currentIndex += count;
-      } else {
-        this.media = [...this.media, ...newMedia];
-      }
-    } catch (e) {
-      console.error("Error fetching media:", e);
-    } finally {
-      this.loading = false;
+    const newMedia = movieList.map((m) => ({
+      image: m.src,
+      link: m.src,
+      title: m.title,
+    }));
+
+    if (direction === "left") {
+      this.media = [...newMedia, ...this.media];
+      this.currentIndex += count;
+    } else {
+      this.media = [...this.media, ...newMedia];
     }
+
+    console.log("Loaded movies:", newMedia.length);
+  } catch (e) {
+    console.error("Error fetching media:", e);
+  } finally {
+    this.loading = false;
   }
+}
+
+
 
   next() {
     if (this.currentIndex + 3 >= this.media.length) this.getMedia(3, "right");
