@@ -159,14 +159,11 @@ export class FavoriteMedia extends LitElement {
     font-family: Arial, sans-serif;
   }
 
-  /* Default Light Mode */
   .wrapper {
     padding: 1.5rem;
     max-width: 950px;
     margin: 0 auto;
     text-align: center;
-    background: #ffffff;
-    color: #000000;
   }
 
   .carousel {
@@ -208,7 +205,6 @@ export class FavoriteMedia extends LitElement {
     border-radius: 8px;
     overflow: hidden;
     background: #f5f5f5;
-    color: #000000;
     cursor: pointer;
     transition: transform 0.2s ease;
     padding-bottom: 0.5rem;
@@ -246,7 +242,6 @@ export class FavoriteMedia extends LitElement {
     padding: 0.4rem 0.8rem;
     cursor: pointer;
     font-size: 0.9rem;
-    color: #000000;
     transition: all 0.2s ease;
   }
 
@@ -308,53 +303,6 @@ export class FavoriteMedia extends LitElement {
 
     img {
       height: 200px;
-    }
-  }
-
-  /* DARK MODE OVERRIDES */
-  @media (prefers-color-scheme: dark) {
-    .wrapper {
-      background: #121212;
-      color: #e5e5e5;
-    }
-
-    .card {
-      background: #1e1e1e;
-      color: #e5e5e5;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-    }
-
-    .arrow {
-      color: #79b8ff;
-    }
-
-    button.like,
-    button.dislike,
-    button.share {
-      background: #2c2c2c;
-      color: #e5e5e5;
-    }
-
-    button.like.active {
-      background: #c53030;
-      color: white;
-    }
-
-    button.dislike.active {
-      background: #4a5568;
-      color: white;
-    }
-
-    button.share:hover {
-      background: #2563eb;
-    }
-
-    .copied {
-      color: #10b981;
-    }
-
-    .loading {
-      color: #a3a3a3;
     }
   }
 `;
