@@ -10,7 +10,7 @@ export class FavoriteMedia extends LitElement {
     currentIndex: { type: Number },
     loading: { type: Boolean },
     likes: { type: Object },
-    copied: { type: String }, 
+    copied: { type: String },
   };
 
   constructor() {
@@ -43,37 +43,34 @@ export class FavoriteMedia extends LitElement {
     localStorage.setItem("favoriteMediaLikes", JSON.stringify(this.likes));
   }
 
-async getMedia(count = 3, direction = "right") {
-  this.loading = true;
-  try {
-    const resp = await fetch("/api/movies");
-    if (!resp.ok) throw new Error(`Fetch failed: ${resp.status}`);
-    const data = await resp.json();
+  async getMedia(count = 3, direction = "right") {
+    this.loading = true;
+    try {
+      const resp = await fetch("/api/movies");
+      if (!resp.ok) throw new Error(`Fetch failed: ${resp.status}`);
+      const data = await resp.json();
+      const movieList = data.movies || [];
 
-    const movieList = data.movies || [];
+      const newMedia = movieList.map((m) => ({
+        image: m.src,
+        link: m.src,
+        title: m.title,
+      }));
 
-    const newMedia = movieList.map((m) => ({
-      image: m.src,
-      link: m.src,
-      title: m.title,
-    }));
+      if (direction === "left") {
+        this.media = [...newMedia, ...this.media];
+        this.currentIndex += count;
+      } else {
+        this.media = [...this.media, ...newMedia];
+      }
 
-    if (direction === "left") {
-      this.media = [...newMedia, ...this.media];
-      this.currentIndex += count;
-    } else {
-      this.media = [...this.media, ...newMedia];
+      console.log("Loaded movies:", newMedia.length);
+    } catch (e) {
+      console.error("Error fetching media:", e);
+    } finally {
+      this.loading = false;
     }
-
-    console.log("Loaded movies:", newMedia.length);
-  } catch (e) {
-    console.error("Error fetching media:", e);
-  } finally {
-    this.loading = false;
   }
-}
-
-
 
   next() {
     if (this.currentIndex + 3 >= this.media.length) this.getMedia(3, "right");
@@ -125,25 +122,18 @@ async getMedia(count = 3, direction = "right") {
                   <p>${m.title}</p>
                   <div class="buttons">
                     <button
-                      class="like ${this.likes[m.title] === "like"
-                        ? "active"
-                        : ""}"
+                      class="like ${this.likes[m.title] === "like" ? "active" : ""}"
                       @click=${() => this.toggleLike(m.title, "like")}
                     >
                       ❤️ Like
                     </button>
                     <button
-                      class="dislike ${this.likes[m.title] === "dislike"
-                        ? "active"
-                        : ""}"
+                      class="dislike ${this.likes[m.title] === "dislike" ? "active" : ""}"
                       @click=${() => this.toggleLike(m.title, "dislike")}
                     >
                       👎 Dislike
                     </button>
-                    <button
-                      class="share"
-                      @click=${() => this.copyLink(m.link, m.title)}
-                    >
+                    <button class="share" @click=${() => this.copyLink(m.link, m.title)}>
                       🔗 Share
                     </button>
                   </div>
@@ -164,215 +154,214 @@ async getMedia(count = 3, direction = "right") {
   }
 
   static styles = css`
-  :host {
-    display: block;
-    font-family: Arial, sans-serif;
-    color-scheme: light dark; /* Tells browser to support dark mode */
-  }
-
-  .wrapper {
-    padding: 1.5rem;
-    max-width: 950px;
-    margin: 0 auto;
-    text-align: center;
-    background: var(--wrapper-bg, #ffffff);
-    color: var(--wrapper-text, #000000);
-  }
-
-  .carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .arrow {
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #007acc;
-    transition: transform 0.2s ease;
-  }
-
-  .arrow:hover:not(:disabled) {
-    transform: scale(1.2);
-    color: #005fa3;
-  }
-
-  .arrow:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .slides {
-    display: flex;
-    gap: 1rem;
-    overflow: hidden;
-    width: 800px;
-    transition: transform 0.4s ease-in-out;
-  }
-
-  .card {
-    flex: 1 0 250px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #f5f5f5;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    padding-bottom: 0.5rem;
-    position: relative;
-  }
-
-  .card:hover {
-    transform: scale(1.03);
-  }
-
-  img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    display: block;
-  }
-
-  p {
-    margin: 0.5rem 0;
-    font-weight: bold;
-  }
-
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  button.like,
-  button.dislike,
-  button.share {
-    background: #e0e0e0;
-    border: none;
-    border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-  }
-
-  button.like.active {
-    background: #ff4d4f;
-    color: white;
-  }
-
-  button.dislike.active {
-    background: #4f5d75;
-    color: white;
-  }
-
-  button.like:hover:not(.active) {
-    background: #ff9999;
-  }
-
-  button.dislike:hover:not(.active) {
-    background: #9fa9c9;
-  }
-
-  button.share:hover {
-    background: #a0d8ef;
-  }
-
-  .copied {
-    color: green;
-    font-size: 0.85rem;
-    margin-top: 0.3rem;
-    animation: fadeOut 1.2s ease-in-out forwards;
-  }
-
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
+    :host {
+      display: block;
+      font-family: Arial, sans-serif;
+      color-scheme: light dark;
     }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
 
-  .loading {
-    margin-top: 1rem;
-    font-style: italic;
-    color: #666;
-  }
+    .wrapper {
+      padding: 1.5rem;
+      max-width: 950px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--wrapper-bg, #ffffff);
+      color: var(--wrapper-text, #000000);
+    }
 
-  @media (max-width: 800px) {
-    .slides {
-      width: 100%;
-      flex-direction: column;
+    .carousel {
+      display: flex;
       align-items: center;
-    }
-
-    .card {
-      width: 85%;
+      justify-content: center;
+      gap: 1rem;
     }
 
     .arrow {
-      font-size: 1.5rem;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #007acc;
+      transition: transform 0.2s ease;
+    }
+
+    .arrow:hover:not(:disabled) {
+      transform: scale(1.2);
+      color: #005fa3;
+    }
+
+    .arrow:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .slides {
+      display: flex;
+      gap: 1rem;
+      overflow: hidden;
+      width: 800px;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .card {
+      flex: 1 0 250px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f5f5f5;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      padding-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
     }
 
     img {
-      height: 200px;
-    }
-  }
-
-  /* 🌙 DARK MODE */
-  @media (prefers-color-scheme: dark) {
-    .wrapper {
-      background: #0f172a;
-      color: #e2e8f0;
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
     }
 
-    .card {
-      background: #1e293b;
-      color: #e2e8f0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    p {
+      margin: 0.5rem 0;
+      font-weight: bold;
     }
 
-    .arrow {
-      color: #60a5fa;
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
     button.like,
     button.dislike,
     button.share {
-      background: #334155;
-      color: #e2e8f0;
+      background: #e0e0e0;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
     }
 
     button.like.active {
-      background: #dc2626;
+      background: #ff4d4f;
+      color: white;
     }
 
     button.dislike.active {
-      background: #64748b;
+      background: #4f5d75;
+      color: white;
+    }
+
+    button.like:hover:not(.active) {
+      background: #ff9999;
+    }
+
+    button.dislike:hover:not(.active) {
+      background: #9fa9c9;
     }
 
     button.share:hover {
-      background: #1d4ed8;
+      background: #a0d8ef;
     }
 
     .copied {
-      color: #22c55e;
+      color: green;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      animation: fadeOut 1.2s ease-in-out forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
     }
 
     .loading {
-      color: #94a3b8;
+      margin-top: 1rem;
+      font-style: italic;
+      color: #666;
     }
-  }
-`;
 
+    @media (max-width: 800px) {
+      .slides {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        width: 85%;
+      }
+
+      .arrow {
+        font-size: 1.5rem;
+      }
+
+      img {
+        height: 200px;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .wrapper {
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      .card {
+        background: #1e293b;
+        color: #e2e8f0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+      }
+
+      .arrow {
+        color: #60a5fa;
+      }
+
+      button.like,
+      button.dislike,
+      button.share {
+        background: #334155;
+        color: #e2e8f0;
+      }
+
+      button.like.active {
+        background: #dc2626;
+      }
+
+      button.dislike.active {
+        background: #64748b;
+      }
+
+      button.share:hover {
+        background: #1d4ed8;
+      }
+
+      .copied {
+        color: #22c55e;
+      }
+
+      .loading {
+        color: #94a3b8;
+      }
+    }
+  `;
 }
 
 customElements.define("favorite-media", FavoriteMedia);
+
 
 
