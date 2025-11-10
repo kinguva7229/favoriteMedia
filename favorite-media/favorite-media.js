@@ -2,6 +2,10 @@
  * Copyright 2025 kinguva7229
  * @license Apache-2.0
  */
+/**
+ * Copyright 2025 kinguva7229
+ * @license Apache-2.0
+ */
 import { LitElement, html, css } from "lit";
 
 export class FavoriteMedia extends LitElement {
@@ -10,6 +14,7 @@ export class FavoriteMedia extends LitElement {
     currentIndex: { type: Number },
     loading: { type: Boolean },
     likes: { type: Object },
+    copied: { type: String }, 
   };
 
   constructor() {
@@ -18,6 +23,7 @@ export class FavoriteMedia extends LitElement {
     this.currentIndex = 0;
     this.loading = false;
     this.likes = {};
+    this.copied = "";
   }
 
   connectedCallback() {
@@ -25,7 +31,6 @@ export class FavoriteMedia extends LitElement {
     this.loadLikes();
     this.getMedia(6);
   }
-
 
   loadLikes() {
     const stored = localStorage.getItem("favoriteMediaLikes");
@@ -38,7 +43,6 @@ export class FavoriteMedia extends LitElement {
     }
   }
 
-
   saveLikes() {
     localStorage.setItem("favoriteMediaLikes", JSON.stringify(this.likes));
   }
@@ -46,7 +50,7 @@ export class FavoriteMedia extends LitElement {
   async getMedia(count = 3, direction = "right") {
     this.loading = true;
     try {
-      const resp = await fetch("/data/movies.json");
+      const resp = await fetch("/api/movies.json");
       if (!resp.ok) throw new Error("Fetch failed");
       const data = await resp.json();
       const movieList = Array.isArray(data.movies) ? data.movies : data;
@@ -81,13 +85,22 @@ export class FavoriteMedia extends LitElement {
   }
 
   toggleLike(title, value) {
-    // Toggle logic
     const updatedLikes = {
       ...this.likes,
       [title]: this.likes[title] === value ? null : value,
     };
     this.likes = updatedLikes;
     this.saveLikes();
+  }
+
+  async copyLink(link, title) {
+    try {
+      await navigator.clipboard.writeText(link);
+      this.copied = title;
+      setTimeout(() => (this.copied = ""), 1500);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
   }
 
   render() {
@@ -126,7 +139,16 @@ export class FavoriteMedia extends LitElement {
                     >
                       👎 Dislike
                     </button>
+                    <button
+                      class="share"
+                      @click=${() => this.copyLink(m.link, m.title)}
+                    >
+                      🔗 Share
+                    </button>
                   </div>
+                  ${this.copied === m.title
+                    ? html`<p class="copied">Copied!</p>`
+                    : ""}
                 </div>
               `
             )}
@@ -151,11 +173,6 @@ export class FavoriteMedia extends LitElement {
       max-width: 950px;
       margin: 0 auto;
       text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 1rem;
-      font-size: 1.8rem;
     }
 
     .carousel {
@@ -200,6 +217,7 @@ export class FavoriteMedia extends LitElement {
       cursor: pointer;
       transition: transform 0.2s ease;
       padding-bottom: 0.5rem;
+      position: relative;
     }
 
     .card:hover {
@@ -225,7 +243,8 @@ export class FavoriteMedia extends LitElement {
     }
 
     button.like,
-    button.dislike {
+    button.dislike,
+    button.share {
       background: #e0e0e0;
       border: none;
       border-radius: 6px;
@@ -253,6 +272,29 @@ export class FavoriteMedia extends LitElement {
       background: #9fa9c9;
     }
 
+    button.share:hover {
+      background: #a0d8ef;
+    }
+
+    .copied {
+      color: green;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      animation: fadeOut 1.2s ease-in-out forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
     .loading {
       margin-top: 1rem;
       font-style: italic;
@@ -274,10 +316,6 @@ export class FavoriteMedia extends LitElement {
         font-size: 1.5rem;
       }
 
-      h2 {
-        font-size: 1.5rem;
-      }
-
       img {
         height: 200px;
       }
@@ -286,4 +324,5 @@ export class FavoriteMedia extends LitElement {
 }
 
 customElements.define("favorite-media", FavoriteMedia);
+
 
