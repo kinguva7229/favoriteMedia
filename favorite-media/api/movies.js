@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   );
 
   try {
-    const filePath = path.resolve("./movies.json");
+    const filePath = path.resolve("movies.json");
     const data = fs.readFileSync(filePath, "utf-8");
     const parsed = JSON.parse(data);
     res.status(200).json(parsed.movies);
