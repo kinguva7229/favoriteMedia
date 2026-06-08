@@ -44,6 +44,7 @@ export class FavoriteMedia extends LitElement {
   }
 
   async getMedia(count = 3, direction = "right") {
+    if (this.media.length > 0) return;
     this.loading = true;
     try {
       const resp = await fetch("/api/movies");
@@ -58,12 +59,7 @@ export class FavoriteMedia extends LitElement {
         title: m.title,
       }));
 
-      if (direction === "left") {
-        this.media = [...newMedia, ...this.media];
-        this.currentIndex += count;
-      } else {
-        this.media = [...this.media, ...newMedia];
-      }
+      this.media = newMedia;
 
       console.log("Loaded movies:", newMedia.length);
     } catch (e) {
@@ -74,13 +70,11 @@ export class FavoriteMedia extends LitElement {
   }
 
   next() {
-    if (this.currentIndex + 3 >= this.media.length) this.getMedia(3, "right");
     this.currentIndex = Math.min(this.currentIndex + 1, this.media.length - 3);
   }
 
   prev() {
-    if (this.currentIndex <= 0) this.getMedia(3, "left");
-    else this.currentIndex = Math.max(this.currentIndex - 1, 0);
+    this.currentIndex = Math.max(this.currentIndex - 1, 0);
   }
 
   toggleLike(title, value) {
@@ -128,7 +122,7 @@ export class FavoriteMedia extends LitElement {
                         : ""}"
                       @click=${() => this.toggleLike(m.title, "like")}
                     >
-                      ❤️ Like
+                      Like
                     </button>
                     <button
                       class="dislike ${this.likes[m.title] === "dislike"
@@ -136,13 +130,13 @@ export class FavoriteMedia extends LitElement {
                         : ""}"
                       @click=${() => this.toggleLike(m.title, "dislike")}
                     >
-                      👎 Dislike
+                      Dislike
                     </button>
                     <button
                       class="share"
                       @click=${() => this.copyLink(m.link, m.title)}
                     >
-                      🔗 Share
+                      Share
                     </button>
                   </div>
                   ${this.copied === m.title
