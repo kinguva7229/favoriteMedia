@@ -70,7 +70,8 @@ export class FavoriteMedia extends LitElement {
   }
 
   next() {
-    this.currentIndex = Math.min(this.currentIndex + 1, this.media.length - 3);
+    const maxIndex = Math.max(this.media.length - 3, 0);
+    this.currentIndex = Math.min(this.currentIndex + 1, maxIndex);
   }
 
   prev() {
